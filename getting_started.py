@@ -39,9 +39,6 @@ parser.add_argument(
 
 # Generic:
 radio = RF24(17, 0)
-# rx = RF24(27, 10) # TODO
-# tx = RF24(17, 0)
-
 ################## Linux (BBB,x86,etc) #########################
 # See http://nRF24.github.io/RF24/pages.html for more information on usage
 # See http://iotdk.intel.com/docs/master/mraa/ for more information on MRAA
