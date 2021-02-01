@@ -3,6 +3,6 @@ import struct
 from device import Device
 
 class Mobile (Device):
-    def __init__(self, r1, role):
+    def __init__(self, radios, role = "R"):
         self.radio_number = 1
-        Device.__init__(self, r1, role)
+        Device.__init__(self, radios, role)

@@ -6,13 +6,12 @@ from base import Base
 # tx = RF24(17, 0)
 
 if __name__ == "__main__":
-    radio = RF24(17, 0)
-    base = Base(radio, "T")
+    #radio = RF24(17, 0)
+    base = Base([RF24(17, 0), RF24(27, 10)], "T")
 
     try:
-        while True:
-            base.operate() 
+        base.operate()
     except KeyboardInterrupt:
         print(" Keyboard Interrupt detected. Exiting...")
-        base.r1.powerDown()
+        base.shutDown()
         sys.exit()
