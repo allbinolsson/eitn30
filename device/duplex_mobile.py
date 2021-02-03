@@ -12,9 +12,12 @@ if __name__ == '__main__':
     rx.start()
     tx = threading.Thread(target=duplex.transmit, args=(transmitter,))
     tx.start()
+    info = threading.Thread(target=duplex.printInfo, args=(1,))
+    info.start()
 
     rx.join()
     tx.join()
+    info.join()
 
     duplex.device.shutDown()
     sys.exit()

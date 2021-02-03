@@ -14,8 +14,12 @@ if __name__ == '__main__':
     rx = threading.Thread(target=duplex.receive, args=(receiver,))
     rx.start()
     
-    tx.join()
+    info = threading.Thread(target=duplex.printInfo, args=(1,))
+    info.start()
+
+    tx.join()   # this point will never be reached because of while(true) loops
     rx.join()
+    info.join()
 
     duplex.device.shutDown()
     sys.exit()
