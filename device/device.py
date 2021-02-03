@@ -3,21 +3,22 @@ import time
 from RF24 import RF24, RF24_PA_LOW, RF24_2MBPS
 
 class Device:
-    def __init__(self, radios, role):
+    def __init__(self, radios, role = ""):
+        # initialize the radios themselves
         self.radios = radios
-        self.payload = [0.0]
+        self.payload = [0.0, 0.0]
         self.address = [b'1Node', b'2Node']
-        self.role = role if role.upper().startswith("T") or role.upper().startswith("R") else "?"
+        self.radioNumber = 0 if role.upper().startswith("B") else 1
         for r in self.radios:
             if not r.begin():
-                raise RuntimeError("radio hardware is not responding")
+                raise RuntimeError("Hardware Error")
             r.setPALevel(RF24_PA_LOW)
-            r.openWritingPipe(self.address[self.radio_number])
-            r.openReadingPipe(1, self.address[not self.radio_number])
+            r.openWritingPipe(self.address[self.radioNumber])
+            r.openReadingPipe(1, self.address[not self.radioNumber])
             r.payloadSize = len(struct.pack("<f", self.payload[0]))
             r.disableCRC()
-            r.setDataRate(RF24_2MBPS)
-            
+            r.setDataRate(RF24_2MBPS)    
+            print("Created device!")
 
     def transmit(self):  
         """Transmits an incrementing float every second"""
