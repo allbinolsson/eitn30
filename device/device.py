@@ -18,7 +18,7 @@ class Device:
             r.payloadSize = len(struct.pack("<f", self.payload[0]))
             r.disableCRC()
             r.setDataRate(RF24_2MBPS)    
-            print("Created device!")
+        print("Created device!")
 
     def transmit(self):  
         """Transmits an incrementing float every second"""
