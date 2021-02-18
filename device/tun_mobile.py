@@ -1,38 +1,17 @@
-import socket
 import threading
-from tuntap import TunTap
+from tun_device import TunDevice
 
-RCV_IP = "192.168.10.206"
-MY_IP = "192.168.10.221"
+RCV_IP = "192.168.10.200"
+MY_IP = "192.168.10.215"
 UDP_PORT = 4000
 
-def transmit(socket, msg):
-    print("Transmitting!")
-    while True:
-        socket.sendto(msg.encode(), (RCV_IP, UDP_PORT))
-
-def receive(socket):
-    print("Receiving!")
-    while True:
-        rcvd, addr = socket.recvfrom(1024)
-        print("Received: {}\tFrom address: {}".format(rcvd, addr))
-
 if __name__ == "__main__":
-    txSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    rxSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    rxSocket.bind((MY_IP, UDP_PORT))
+    tun = TunDevice(["192.168.2.2", "255.255.255.0"], # gateway="192.168.2.1"
+                    ["192.168.10.215", "192.168.10.200", 4000])
 
-    tun = TunTap(nic_type="Tun", nic_name="tun0")
-    tun.config(ip="192.168.2.2", mask="255.255.255.0", gateway="192.168.2.1")
-
-    rxThread = threading.Thread(target=receive, args=(rxSocket,))
-    txThread = threading.Thread(target=transmit, args=(txSocket, 'Hello base!',))
+    rxThread = threading.Thread(target=tun.receive, args=())
+    txThread = threading.Thread(target=tun.transmit, args=())
     rxThread.start()
     txThread.start()
 
-    while True:
-        buf = tun.read()
-        txSocket.sendto(buf, (RCV_IP, UDP_PORT))
-        print("Sent: {}".format(buf))
-    
-    tun.close()
+    # tun.close()
