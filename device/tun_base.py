@@ -1,13 +1,14 @@
-import threading
+import time
+from longgeframe import Frame
 from tun_device import TunDevice
 
-if __name__ == "__main__":
-    tun = TunDevice(["192.168.2.1", "255.255.255.0"],
-                    ["192.168.10.200", "192.168.10.215", 4000])
-    
-    rxThread = threading.Thread(target=tun.receive, args=())
-    txThread = threading.Thread(target=tun.transmit, args=())
-    rxThread.start()
-    txThread.start()
+class TunBase (TunDevice):
+    def __init__(self, tunData, udpData):
+        super().__init__(tunData, udpData)
 
-    # tun.close()
+    def findLargest(self, table):
+        largest = 1
+        for i in table:
+            n = i.split(".")[3]
+            largest = n if n > larger else largest
+        return largest + 1
