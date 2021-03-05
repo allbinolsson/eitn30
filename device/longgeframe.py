@@ -4,7 +4,7 @@ class FrameReader:
     def bits2bytes (self, bits: str):
         return bytes(int(bits[i:i + 8], 2) for i in range(0, len(bits), 8))
 
-    def bytes2bits (self, byte: bytes):
+    def bytes2bits (self, byte: bytes) -> str:
         final = "" 
         for i, b in enumerate(byte):
             allZeros = True
